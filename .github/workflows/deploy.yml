@@ -15,20 +15,21 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v3
 
-      - name: 设置 Node.js 环境
+      - name: 设置 Node.js 环境 (v20)
         uses: actions/setup-node@v3
         with:
-          node-version: "16" # VuePress 1.x 推荐使用 Node 16
+          # 修改点 1：升级到 Node 20 以满足 edgeone CLI 的运行要求
+          node-version: "20"
 
       - name: 安装依赖
         run: npm install
 
       - name: 构建网站
-        # 你的 package.json 中 docs:build 对应 "vuepress build ."
-        # 默认输出目录是 .vuepress/dist
+        # 修改点 2：添加此环境变量，解决 VuePress 1.x 在 Node 17+ 版本的 OpenSSL 报错问题
+        env:
+          NODE_OPTIONS: "--openssl-legacy-provider"
         run: npm run docs:build
 
       - name: 部署到 EdgeOne Pages
-        # 使用 npx 运行 edgeone CLI 工具
-        # 注意：将 'your-project-name' 替换为你想要在 EdgeOne 上显示的项目名称（如 ai-guide-yupi）
+        # 注意：这里的 --name "ai-guide" 是你在 EdgeOne 上的项目名，确保 token 已配置在仓库 Secrets 中
         run: npx edgeone pages deploy ./.vuepress/dist --name "ai-guide" --token "${{ secrets.EDGEONE_API_TOKEN }}"
