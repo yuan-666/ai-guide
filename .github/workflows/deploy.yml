@@ -31,4 +31,4 @@ jobs:
       - name: 部署到 EdgeOne Pages
         # 使用 npx 运行 edgeone CLI 工具
         # 注意：将 'your-project-name' 替换为你想要在 EdgeOne 上显示的项目名称（如 ai-guide-yupi）
-        run: npx edgeone pages deploy ./.vuepress/dist --name "your-project-name" --token "${{ secrets.EDGEONE_API_TOKEN }}"
+        run: npx edgeone pages deploy ./.vuepress/dist --name "ai-guide" --token "${{ secrets.EDGEONE_API_TOKEN }}"
